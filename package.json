@@ -1,0 +1,12 @@
+{
+  "name": "best-guess-estimator",
+  "version": "1.0.0",
+  "description": "PWA for creating home repair estimates",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -s ."
+  },
+  "keywords": ["pwa", "estimates", "pdf", "home-repair"],
+  "author": "",
+  "license": "ISC"
+}
