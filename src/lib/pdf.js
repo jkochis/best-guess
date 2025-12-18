@@ -1,8 +1,8 @@
 import { jsPDF } from 'jspdf';
 
-export function generatePDF(data) {
-    const doc = new jsPDF();
 
+function createPDFDoc(data) {
+    const doc = new jsPDF();
     let y = 20;
 
     // Header
@@ -118,7 +118,21 @@ export function generatePDF(data) {
         doc.text(notesLines, 20, y);
     }
 
-    // Save PDF
+    return doc;
+}
+
+export function getPDFUrl(data) {
+    const doc = createPDFDoc(data);
+    return doc.output('bloburl');
+}
+
+export function savePDF(data) {
+    const doc = createPDFDoc(data);
     const filename = `estimate-${data.estimate.number}-${data.customer.name.replace(/\s+/g, '-')}.pdf`;
     doc.save(filename);
+}
+
+// Backward compatibility (if needed) or simple wrapper
+export function generatePDF(data) {
+    savePDF(data);
 }

@@ -1,9 +1,9 @@
 <script>
-    import { generatePDF } from '../lib/pdf';
-    import { businessInfo, customerInfo, estimateDetails, lineItems, totals, notes, taxRate } from '../lib/stores';
+    import { generatePDF, getPDFUrl } from '../lib/pdf';
+    import { businessInfo, customerInfo, estimateDetails, lineItems, totals, notes, taxRate, previewState } from '../lib/stores';
     import { get } from 'svelte/store';
 
-    function handleGeneratePDF() {
+    function handlePreviewPDF() {
         const data = {
             business: $businessInfo,
             customer: $customerInfo,
@@ -15,7 +15,9 @@
                 taxRate: $taxRate
             }
         };
-        generatePDF(data);
+        
+        const url = getPDFUrl(data);
+        previewState.set({ isOpen: true, pdfUrl: url });
     }
 
     function emailPDF() {
@@ -80,7 +82,7 @@
 </script>
 
 <div class="actions">
-    <button type="button" class="btn btn-primary" on:click={handleGeneratePDF}>Generate PDF</button>
+    <button type="button" class="btn btn-primary" on:click={handlePreviewPDF}>Preview PDF</button>
     <button type="button" class="btn btn-primary" on:click={emailPDF}>Email to Customer</button>
     <button type="button" class="btn btn-secondary" on:click={clearForm}>Clear Form</button>
 </div>

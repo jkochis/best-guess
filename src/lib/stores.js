@@ -66,5 +66,12 @@ export const totals = derived(
     }
 );
 
+
 // Notes
 export const notes = writable('');
+
+// PDF Preview Store
+export const previewState = writable({
+    isOpen: false,
+    pdfUrl: null
+});

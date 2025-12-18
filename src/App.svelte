@@ -7,6 +7,7 @@
   import Totals from './components/Totals.svelte';
   import Notes from './components/Notes.svelte';
   import Actions from './components/Actions.svelte';
+  import PreviewModal from './components/PreviewModal.svelte';
 </script>
 
 <div class="container">
@@ -23,4 +24,6 @@
       <Actions />
     </form>
   </main>
+  
+  <PreviewModal />
 </div>
