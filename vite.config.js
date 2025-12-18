@@ -1,0 +1,36 @@
+import { defineConfig } from 'vite'
+import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { VitePWA } from 'vite-plugin-pwa'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    svelte(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Best Guess - Home Repair Estimates',
+        short_name: 'Best Guess',
+        description: 'Professional home repair estimate generator',
+        theme_color: '#2563eb',
+        background_color: '#f8fafc',
+        display: 'standalone',
+        orientation: 'portrait-primary',
+        icons: [
+          {
+            src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFrSURBVHgB7ZbNTsJAFIXPFH8iRhM3xoUrN76Bb+CzuHHpE/gGPosvoBtXJkbixoVGoyZqMBCYHu9tGWxLpzNTSHThSU7a6cycr/fOdIZSDocjHRzAL5FI3KIoOkNRFEFRtI+iaBdF0SaKoi0URRsoitZRFK2iKFpBUfQHDo4LuEKRWzjjrMJD7LDMEPJctgIPscMyQ8hzWb5ESLkVeIgdlhlCnsvyJULKrcBD7LDMEPJcli8RUm4FHmKHZYaQ57J8iZByK/AQOywzhDyX5TskJ+VSFYsI1PJMPT/XKNeMMN+gYjslvUHZjyTlQgm7It9Us1uS0r5Vpd6H+yFiX1Lz9UP1BvdKqndYfgjvUqo+NOi9a6jmvJz/0Hs+2uRXqF7T+3dQzXk5f8e87j1U/UH1ntX7WM79qdZgHup+oPqIaq6/0ftPUP0CdRfVXH+j96+h+gXqDqq5/kbvP0H1C9RdVHP9jd7fQvUL1B1Uc/2N3udwOCzwD+xTeCVmfSYRAAAAAElFTkSuQmCC",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "any maskable"
+          },
+          {
+            src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFrSURBVHgB7ZbNTsJAFIXPFH8iRhM3xoUrN76Bb+CzuHHpE/gGPosvoBtXJkbixoVGoyZqMBCYHu9tGWxLpzNTSHThSU7a6cycr/fOdIZSDocjHRzAL5FI3KIoOkNRFEFRtI+iaBdF0SaKoi0URRsoitZRFK2iKFpBUfQHDo4LuEKRWzjjrMJD7LDMEPJctgIPscMyQ8hzWb5ESLkVeIgdlhlCnsvyJULKrcBD7LDMEPJcli8RUm4FHmKHZYaQ57J8iZByK/AQOywzhDyX5TskJ+VSFYsI1PJMPT/XKNeMMN+gYjslvUHZjyTlQgm7It9Us1uS0r5Vpd6H+yFiX1Lz9UP1BvdKqndYfgjvUqo+NOi9a6jmvJz/0Hs+2uRXqF7T+3dQzXk5f8e87j1U/UH1ntX7WM79qdZgHup+oPqIaq6/0ftPUP0CdRfVXH+j96+h+gXqDqq5/kbvP0H1C9RdVHP9jd7fQvUL1B1Uc/2N3udwOCzwD+xTeCVmfSYRAAAAAElFTkSuQmCC",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable"
+          }
+        ]
+      }
+    })
+  ],
+})

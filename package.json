@@ -1,12 +1,20 @@
 {
-  "name": "best-guess-estimator",
-  "version": "1.0.0",
-  "description": "PWA for creating home repair estimates",
-  "main": "index.html",
+  "name": "temp-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "npx serve -s ."
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "keywords": ["pwa", "estimates", "pdf", "home-repair"],
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "svelte": "^5.43.8",
+    "vite": "^7.2.4"
+  },
+  "dependencies": {
+    "jspdf": "^3.0.4",
+    "vite-plugin-pwa": "^1.2.0"
+  }
 }

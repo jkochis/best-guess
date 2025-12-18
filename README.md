@@ -19,33 +19,31 @@ A Progressive Web App for creating professional home repair estimates and genera
 
 ### Installation
 
-1. Install dependencies (optional, only needed for development server):
+1. Install dependencies:
 ```bash
-npm install -g serve
+npm install
 ```
 
 ### Running the App
 
 1. Start the development server:
 ```bash
-npm start
+npm run dev
 ```
 
-2. Open your browser and navigate to `http://localhost:3000`
+2. Open your browser and navigate to the URL shown (usually `http://localhost:5173`)
 
-3. For production, simply host the files on any web server or use services like:
-   - Netlify
-   - Vercel
-   - GitHub Pages
-   - Any static hosting service
+### Building for Production
 
-### Installing as PWA
+1. Build the app:
+```bash
+npm run build
+```
 
-Once the app is running:
-
-1. On desktop: Look for the install icon in your browser's address bar
-2. On mobile: Use the "Add to Home Screen" option in your browser menu
-3. The app will then work offline and can be accessed like a native app
+2. Preview the build:
+```bash
+npm run preview
+```
 
 ## Usage
 
@@ -98,75 +96,28 @@ After completing an estimate, use "Clear Form" to:
 
 ### Technologies Used
 
-- HTML5, CSS3, JavaScript (Vanilla)
-- jsPDF for PDF generation
-- Service Worker for offline functionality
-- Web App Manifest for PWA capabilities
-- LocalStorage for data persistence
+- **Svelte 5**: Logic and UI components
+- **Vite**: Build tool and dev server
+- **jsPDF**: Client-side PDF generation
+- **vite-plugin-pwa**: Offline functionality and installability
+- **LocalStorage**: Data persistence
 
-### Browser Support
-
-Works in all modern browsers:
-- Chrome/Edge (recommended)
-- Firefox
-- Safari
-- Mobile browsers
-
-### Offline Functionality
-
-Once loaded, the app works completely offline thanks to service worker caching. This means you can:
-- Create estimates without internet
-- Generate PDFs offline
-- Access previously saved business information
-
-## File Structure
+### File Structure
 
 ```
 best-guess/
-├── index.html          # Main HTML structure
-├── app.js              # Application logic
-├── styles.css          # Styling and responsive design
-├── manifest.json       # PWA configuration
-├── service-worker.js   # Offline functionality
-├── package.json        # Project metadata
-└── README.md          # This file
+├── src/
+│   ├── components/     # UI Components (BusinessInfo, LineItems, etc.)
+│   ├── lib/
+│   │   ├── stores.js   # State management
+│   │   └── pdf.js      # PDF generation logic
+│   ├── App.svelte      # Main application component
+│   └── app.css         # Global styles
+├── public/             # Static assets
+├── legacy/             # Archived Vanilla JS version
+├── index.html          # Entry point
+└── vite.config.js      # Build configuration
 ```
-
-## Customization
-
-### Changing Colors
-
-Edit the CSS variables in `styles.css`:
-
-```css
-:root {
-    --primary-color: #2563eb;  /* Main brand color */
-    --secondary-color: #64748b; /* Secondary actions */
-    /* ... more variables */
-}
-```
-
-### Modifying PDF Layout
-
-Edit the `generatePDF()` function in `app.js` to customize:
-- Font sizes and colors
-- Layout and positioning
-- Additional fields
-- Logo or branding
-
-### Adding Fields
-
-1. Add input fields in `index.html`
-2. Update `getFormData()` in `app.js` to include new fields
-3. Modify `generatePDF()` to display the new information
-
-## Tips
-
-- Use consistent estimate numbering (e.g., EST-001, EST-002)
-- Set your valid until date to give customers time to review
-- Be detailed in line item descriptions
-- Include payment terms and warranty info in notes
-- Save frequently used line items as templates
 
 ## License
 

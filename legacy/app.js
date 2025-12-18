@@ -123,7 +123,7 @@ function renderLineItems() {
                        class="line-item-rate"
                        data-id="${item.id}"
                        data-field="rate">
-                <div class="line-item-amount">$${item.amount.toFixed(2)}</div>
+                <div class="line-item-amount" data-id="${item.id}">$${item.amount.toFixed(2)}</div>
                 <button type="button" class="btn-remove" data-id="${item.id}">×</button>
             </div>
         `;
@@ -136,7 +136,15 @@ function renderLineItems() {
             const id = parseInt(e.target.dataset.id);
             const field = e.target.dataset.field;
             updateLineItem(id, field, e.target.value);
-            renderLineItems();
+            
+            // Only update the specific row's amount if necessary, don't re-render everything
+            if (field === 'quantity' || field === 'rate') {
+                const item = lineItems.find(i => i.id === id);
+                const amountDiv = container.querySelector(`.line-item-amount[data-id="${id}"]`);
+                if (item && amountDiv) {
+                    amountDiv.textContent = `$${item.amount.toFixed(2)}`;
+                }
+            }
         });
     });
 
