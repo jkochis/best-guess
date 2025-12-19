@@ -3,6 +3,16 @@ import { jsPDF } from 'jspdf';
 
 function createPDFDoc(data) {
     const doc = new jsPDF();
+
+    // Helper to print text and return new Y position
+    function printText(text, x, y, size = 10, maxWidth = 100) {
+        if (!text) return y;
+        doc.setFontSize(size);
+        const lines = doc.splitTextToSize(text, maxWidth);
+        doc.text(lines, x, y);
+        return y + (lines.length * 5); // 5 is line height approximation
+    }
+
     let y = 20;
 
     // Header
@@ -11,30 +21,29 @@ function createPDFDoc(data) {
     doc.text(data.business.name || 'Your Business', 20, y);
 
     y += 10;
-    doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
-    if (data.business.address) doc.text(data.business.address, 20, y);
-    y += 5;
-    if (data.business.phone) doc.text(`Phone: ${data.business.phone}`, 20, y);
-    y += 5;
-    if (data.business.email) doc.text(`Email: ${data.business.email}`, 20, y);
+
+    y = printText(data.business.address, 20, y, 10, 80);
+    if (data.business.phone) y = printText(`Phone: ${data.business.phone}`, 20, y, 10, 80);
+    if (data.business.email) y = printText(`Email: ${data.business.email}`, 20, y, 10, 80);
+
+    // Reset Y for next column if needed, or just ensure enough spacing
+    // For this layout, we want EITHER the business info to push down everything OR have fixed sections.
+    // The original layout had Estimate Title at fixed Y relative to top if business info was short.
+    // Let's ensure we are at least at Y=60 for the title
+    y = Math.max(y + 10, 60);
 
     // Estimate title
-    y += 15;
     doc.setFontSize(20);
     doc.setTextColor(0, 0, 0);
     doc.text('ESTIMATE', 20, y);
 
     // Estimate details
     y += 10;
-    doc.setFontSize(10);
-    doc.text(`Estimate #: ${data.estimate.number}`, 20, y);
-    y += 5;
-    doc.text(`Date: ${data.estimate.date}`, 20, y);
-    y += 5;
+    y = printText(`Estimate #: ${data.estimate.number}`, 20, y, 10, 80);
+    y = printText(`Date: ${data.estimate.date}`, 20, y, 10, 80);
     if (data.estimate.validUntil) {
-        doc.text(`Valid Until: ${data.estimate.validUntil}`, 20, y);
-        y += 5;
+        y = printText(`Valid Until: ${data.estimate.validUntil}`, 20, y, 10, 80);
     }
 
     // Customer info
@@ -43,22 +52,12 @@ function createPDFDoc(data) {
     doc.setTextColor(0, 0, 0);
     doc.text('Bill To:', 20, y);
     y += 6;
-    doc.setFontSize(10);
-    doc.text(data.customer.name, 20, y);
-    y += 5;
-    if (data.customer.address) {
-        const addressLines = doc.splitTextToSize(data.customer.address, 80);
-        doc.text(addressLines, 20, y);
-        y += addressLines.length * 5;
-    }
-    if (data.customer.phone) {
-        doc.text(`Phone: ${data.customer.phone}`, 20, y);
-        y += 5;
-    }
-    if (data.customer.email) {
-        doc.text(`Email: ${data.customer.email}`, 20, y);
-        y += 5;
-    }
+
+    y = printText(data.customer.name, 20, y, 10, 80);
+    y = printText(data.customer.address, 20, y, 10, 80);
+
+    if (data.customer.phone) y = printText(`Phone: ${data.customer.phone}`, 20, y, 10, 80);
+    if (data.customer.email) y = printText(`Email: ${data.customer.email}`, 20, y, 10, 80);
 
     // Line items table
     y += 10;
