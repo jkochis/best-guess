@@ -27,9 +27,8 @@ export const businessInfo = createPersistentStore('businessInfo', {
     address: ''
 });
 
-// Customer Info (Not persisted between reloads usually, but we can if we want. App did clear it.)
-// Legacy app cleared it on "Clear Form".
-export const customerInfo = writable({
+// Customer Info (Now persisted)
+export const customerInfo = createPersistentStore('customerInfo', {
     name: '',
     email: '',
     phone: '',
@@ -74,4 +73,10 @@ export const notes = writable('');
 export const previewState = writable({
     isOpen: false,
     pdfUrl: null
+});
+
+// Link/QR Sharing Store
+export const qrState = writable({
+    isOpen: false,
+    url: ''
 });

@@ -1,6 +1,6 @@
-<script>
     import { generatePDF, getPDFUrl } from '../lib/pdf';
-    import { businessInfo, customerInfo, estimateDetails, lineItems, totals, notes, taxRate, previewState } from '../lib/stores';
+    import { getShareUrl } from '../lib/share';
+    import { businessInfo, customerInfo, estimateDetails, lineItems, totals, notes, taxRate, previewState, qrState } from '../lib/stores';
     import { get } from 'svelte/store';
 
     function handlePreviewPDF() {
@@ -83,6 +83,7 @@
 
 <div class="actions">
     <button type="button" class="btn btn-primary" on:click={handlePreviewPDF}>Preview PDF</button>
+    <button type="button" class="btn btn-primary" on:click={shareQR}>Share with QR</button>
     <button type="button" class="btn btn-primary" on:click={emailPDF}>Email to Customer</button>
     <button type="button" class="btn btn-secondary" on:click={clearForm}>Clear Form</button>
 </div>

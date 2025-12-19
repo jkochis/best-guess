@@ -1,23 +1,90 @@
 <script>
-    import { customerInfo } from '../lib/stores';
+    import { customerInfo } from "../lib/stores";
+
+    function clear() {
+        if (confirm("Clear customer info?")) {
+            $customerInfo = { name: "", email: "", phone: "", address: "" };
+        }
+    }
+
+    function save() {
+        alert("Customer info saved!");
+    }
 </script>
 
-<section class="card">
-    <h2>Customer Information</h2>
-    <div class="form-group">
-        <label for="customerName">Customer Name</label>
-        <input type="text" id="customerName" bind:value={$customerInfo.name} required>
+<div class="card">
+    <div class="section-header">
+        <h2>Customer Info</h2>
+        <div class="actions-group">
+            <button type="button" class="btn-icon" on:click={save} title="Save"
+                >🔒</button
+            >
+            <button
+                type="button"
+                class="btn-icon"
+                on:click={clear}
+                title="Clear">🧹</button
+            >
+        </div>
     </div>
+
     <div class="form-group">
-        <label for="customerEmail">Customer Email</label>
-        <input type="email" id="customerEmail" bind:value={$customerInfo.email} required>
+        <label for="cust-name">Customer Name</label>
+        <input
+            id="cust-name"
+            type="text"
+            bind:value={$customerInfo.name}
+            placeholder="Customer Name"
+        />
     </div>
+
     <div class="form-group">
-        <label for="customerPhone">Customer Phone</label>
-        <input type="tel" id="customerPhone" bind:value={$customerInfo.phone}>
+        <label for="cust-address">Address</label>
+        <textarea
+            id="cust-address"
+            bind:value={$customerInfo.address}
+            placeholder="456 Elm St..."
+        ></textarea>
     </div>
+
     <div class="form-group">
-        <label for="projectAddress">Project Address</label>
-        <textarea id="projectAddress" rows="2" bind:value={$customerInfo.address} required></textarea>
+        <label for="cust-phone">Phone</label>
+        <input
+            id="cust-phone"
+            type="tel"
+            bind:value={$customerInfo.phone}
+            placeholder="(555) 987-6543"
+        />
     </div>
-</section>
+
+    <div class="form-group">
+        <label for="cust-email">Email</label>
+        <input
+            id="cust-email"
+            type="email"
+            bind:value={$customerInfo.email}
+            placeholder="customer@example.com"
+        />
+    </div>
+</div>
+
+<style>
+    .actions-group {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-icon {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 4px 8px;
+        transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+        background: var(--border-color);
+    }
+</style>
