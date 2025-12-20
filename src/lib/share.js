@@ -23,3 +23,14 @@ export function loadFromUrl() {
         return null;
     }
 }
+
+export async function shortenUrl(longUrl) {
+    try {
+        const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+        if (!response.ok) throw new Error('Shortening failed');
+        return await response.text();
+    } catch (e) {
+        console.warn('URL shortening failed, using long URL', e);
+        return longUrl;
+    }
+}
