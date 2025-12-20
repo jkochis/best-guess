@@ -36,7 +36,7 @@
     }
 </script>
 
-<CollapsibleCard title="Line Items">
+<CollapsibleCard title="Line Items" id="line-items">
     <div slot="summary">
         {$lineItems.length} items • Subtotal: ${$totals.subtotal.toFixed(2)}
     </div>

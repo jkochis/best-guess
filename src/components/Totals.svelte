@@ -3,7 +3,7 @@
     import CollapsibleCard from "./CollapsibleCard.svelte";
 </script>
 
-<CollapsibleCard title="Totals">
+<CollapsibleCard title="Totals" id="totals">
     <div slot="summary">
         Grand Total: ${$totals.total.toFixed(2)}
     </div>

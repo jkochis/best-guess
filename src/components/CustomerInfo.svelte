@@ -50,7 +50,7 @@
     }
 </script>
 
-<CollapsibleCard title="Customer Info">
+<CollapsibleCard title="Customer Info" id="customer-info">
     <!-- Summary View -->
     <div slot="summary">
         {$customerInfo.name || "No Customer Name"}

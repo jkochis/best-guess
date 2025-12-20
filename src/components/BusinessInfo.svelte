@@ -51,7 +51,7 @@
     }
 </script>
 
-<CollapsibleCard title="Business Info">
+<CollapsibleCard title="Business Info" id="business-info">
     <!-- Summary View -->
     <div slot="summary">
         {$businessInfo.name || "No Business Name"}

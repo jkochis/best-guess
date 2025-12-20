@@ -3,7 +3,7 @@
     import CollapsibleCard from "./CollapsibleCard.svelte";
 </script>
 
-<CollapsibleCard title="Notes">
+<CollapsibleCard title="Notes" id="notes">
     <div slot="summary">
         {$notes
             ? $notes.substring(0, 40) + ($notes.length > 40 ? "..." : "")

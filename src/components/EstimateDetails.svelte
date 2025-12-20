@@ -3,7 +3,7 @@
     import CollapsibleCard from "./CollapsibleCard.svelte";
 </script>
 
-<CollapsibleCard title="Estimate Details">
+<CollapsibleCard title="Estimate Details" id="estimate-details">
     <div slot="summary">
         #{$estimateDetails.number} ({$estimateDetails.date})
     </div>
