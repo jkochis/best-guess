@@ -58,7 +58,16 @@ export const taxRate = createPersistentStore('taxRate', 0);
 export const totals = derived(
     [lineItems, taxRate],
     ([$lineItems, $taxRate]) => {
-        const subtotal = $lineItems.reduce((sum, item) => sum + item.amount, 0);
+        const calculateSubtotal = (items) => {
+            return items.reduce((sum, item) => {
+                if (item.type === 'group' && item.items) {
+                    return sum + calculateSubtotal(item.items);
+                }
+                return sum + (item.amount || 0);
+            }, 0);
+        };
+
+        const subtotal = calculateSubtotal($lineItems);
         const tax = subtotal * ($taxRate / 100);
         const total = subtotal + tax;
         return {

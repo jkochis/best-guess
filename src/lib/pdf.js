@@ -73,18 +73,44 @@ function createPDFDoc(data) {
     y += 8;
     doc.setTextColor(0, 0, 0);
 
+    const printItemRow = (item, indent = 0) => {
+        if (y > 270) {
+            doc.addPage();
+            y = 20;
+        }
+
+        const xOffset = 22 + indent;
+        const description = doc.splitTextToSize(item.description, 90 - indent);
+
+        doc.text(description, xOffset, y);
+        doc.text(item.quantity.toString(), 120, y);
+        doc.text(`$${Number(item.rate).toFixed(2)}`, 140, y);
+        doc.text(`$${Number(item.amount).toFixed(2)}`, 170, y);
+
+        y += Math.max(description.length * 5, 7);
+    };
+
     data.lineItems.forEach(item => {
         if (y > 270) {
             doc.addPage();
             y = 20;
         }
 
-        const description = doc.splitTextToSize(item.description, 90);
-        doc.text(description, 22, y);
-        doc.text(item.quantity.toString(), 120, y);
-        doc.text(`$${Number(item.rate).toFixed(2)}`, 140, y);
-        doc.text(`$${Number(item.amount).toFixed(2)}`, 170, y);
-        y += Math.max(description.length * 5, 7);
+        if (item.type === 'group') {
+            // Group Header
+            doc.setFont(undefined, 'bold');
+            doc.text(item.description || "Group", 22, y);
+            doc.setFont(undefined, 'normal');
+            y += 7;
+
+            // Sub-items
+            if (item.items) {
+                item.items.forEach(subItem => printItemRow(subItem, 5)); // 5mm indent
+            }
+        } else {
+            // Standard Item
+            printItemRow(item);
+        }
     });
 
     // Totals
