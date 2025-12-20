@@ -59,11 +59,13 @@ export const totals = derived(
     [lineItems, taxRate],
     ([$lineItems, $taxRate]) => {
         const calculateSubtotal = (items) => {
+            if (!Array.isArray(items)) return 0;
             return items.reduce((sum, item) => {
-                if (item.type === 'group' && item.items) {
+                if (item.type === 'group' && Array.isArray(item.items)) {
                     return sum + calculateSubtotal(item.items);
                 }
-                return sum + (item.amount || 0);
+                const amt = Number(item.amount);
+                return sum + (isNaN(amt) ? 0 : amt);
             }, 0);
         };
 
