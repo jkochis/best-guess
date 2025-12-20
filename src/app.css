@@ -352,6 +352,19 @@ header h1 {
     button {
         display: none;
     }
+
+    /* If creating an invoice, hide everything else */
+    .container.print-invoice-mode>* {
+        display: none !important;
+    }
+
+    .container.print-invoice-mode>.invoice-wrapper {
+        display: block !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
 }
 
 input[type="number"]::-webkit-inner-spin-button,

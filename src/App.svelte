@@ -37,7 +37,7 @@
   });
 </script>
 
-<div class="container">
+<div class="container" class:print-invoice-mode={$invoiceState.isOpen}>
   <Header />
 
   <main>
@@ -54,10 +54,12 @@
 
   <PreviewModal />
   <QRModal />
-  <InvoiceView
-    contentVisible={$invoiceState.isOpen}
-    onClose={() => ($invoiceState.isOpen = false)}
-  />
+  <div class="invoice-wrapper">
+    <InvoiceView
+      contentVisible={$invoiceState.isOpen}
+      onClose={() => ($invoiceState.isOpen = false)}
+    />
+  </div>
   <HistoryModal
     contentVisible={$historyState.isOpen}
     onClose={() => ($historyState.isOpen = false)}
