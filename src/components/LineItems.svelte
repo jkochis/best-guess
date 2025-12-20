@@ -312,4 +312,23 @@
         border-left: 2px solid var(--border-color);
         padding-left: 12px;
     }
+
+    .line-item-row {
+        gap: 12px; /* Standardize gap */
+    }
+
+    .line-item-quantity {
+        width: 80px; /* Standard width */
+        flex: 0 0 auto;
+    }
+
+    .line-item-rate {
+        width: 100px; /* Standard width */
+        flex: 0 0 auto;
+    }
+
+    /* Adjust main description to not shrink too much */
+    .line-item-description {
+        flex: 1;
+    }
 </style>

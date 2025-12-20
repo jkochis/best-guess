@@ -9,6 +9,8 @@
   import Actions from "./components/Actions.svelte";
   import PreviewModal from "./components/PreviewModal.svelte";
   import QRModal from "./components/QRModal.svelte";
+  import InvoiceView from "./components/InvoiceView.svelte";
+  import HistoryModal from "./components/HistoryModal.svelte";
   import { onMount } from "svelte";
   import { loadFromUrl } from "./lib/share";
   import {
@@ -18,6 +20,8 @@
     lineItems,
     notes,
     taxRate,
+    invoiceState,
+    historyState,
   } from "./lib/stores";
 
   onMount(() => {
@@ -50,4 +54,12 @@
 
   <PreviewModal />
   <QRModal />
+  <InvoiceView
+    contentVisible={$invoiceState.isOpen}
+    onClose={() => ($invoiceState.isOpen = false)}
+  />
+  <HistoryModal
+    contentVisible={$historyState.isOpen}
+    onClose={() => ($historyState.isOpen = false)}
+  />
 </div>

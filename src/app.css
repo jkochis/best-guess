@@ -206,7 +206,6 @@ header h1 {
 .total-row label {
     font-weight: 500;
     min-width: 120px;
-    text-align: right;
 }
 
 .total-row span:last-child {

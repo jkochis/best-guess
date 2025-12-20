@@ -144,7 +144,7 @@
     .modal-header h2 {
         margin: 0;
         font-size: 1.25rem;
-        color: var(--text-primary);
+        color: var(--text-secondary);
     }
 
     .btn-close {
@@ -179,7 +179,7 @@
         gap: 8px;
         font-size: 0.9rem;
         cursor: pointer;
-        color: var(--text-primary);
+        color: var(--text-secondary);
         user-select: none;
     }
 

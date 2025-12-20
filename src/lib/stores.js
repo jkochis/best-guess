@@ -29,6 +29,10 @@ export const businessInfo = createPersistentStore('businessInfo', {
 
 export const savedBusinessProfiles = createPersistentStore('savedBusinessProfiles', []);
 
+// Saved Estimates / History
+export const savedEstimates = createPersistentStore('savedEstimates', []);
+
+
 // Customer Info (Now persisted)
 export const customerInfo = createPersistentStore('customerInfo', {
     name: '',
@@ -94,4 +98,14 @@ export const previewState = writable({
 export const qrState = writable({
     isOpen: false,
     url: ''
+});
+
+// Invoice View State
+export const invoiceState = writable({
+    isOpen: false
+});
+
+// History View State
+export const historyState = writable({
+    isOpen: false
 });
