@@ -2,6 +2,8 @@
     import { customerInfo, savedCustomerProfiles } from "../lib/stores";
     import CollapsibleCard from "./CollapsibleCard.svelte";
 
+    let selectedProfileId = "";
+
     function clear() {
         if (confirm("Clear customer info?")) {
             $customerInfo = { name: "", email: "", phone: "", address: "" };
@@ -23,18 +25,28 @@
         }
     }
 
-    function loadProfile(event) {
-        const profileName = event.target.value;
-        if (!profileName) return;
+    function loadProfile() {
+        if (!selectedProfileId) return;
 
         const profile = $savedCustomerProfiles.find(
-            (p) => p.profileName === profileName,
+            (p) => p.profileName === selectedProfileId,
         );
         if (profile) {
             const { profileName: _, ...data } = profile;
             $customerInfo = data;
         }
-        event.target.value = "";
+    }
+
+    function deleteProfile() {
+        if (!selectedProfileId) return;
+
+        if (confirm(`Delete profile "${selectedProfileId}"?`)) {
+            $savedCustomerProfiles = $savedCustomerProfiles.filter(
+                (p) => p.profileName !== selectedProfileId,
+            );
+            selectedProfileId = "";
+            alert("Profile deleted.");
+        }
     }
 </script>
 
@@ -50,14 +62,28 @@
     <!-- Header Actions -->
     <div slot="header-actions" class="actions-group">
         {#if $savedCustomerProfiles.length > 0}
-            <select class="profile-select" on:change={loadProfile}>
-                <option value="">Load Profile...</option>
-                {#each $savedCustomerProfiles as profile}
-                    <option value={profile.profileName}
-                        >{profile.profileName}</option
+            <div class="profile-controls">
+                <select
+                    class="profile-select"
+                    bind:value={selectedProfileId}
+                    on:change={loadProfile}
+                >
+                    <option value="">Load Profile...</option>
+                    {#each $savedCustomerProfiles as profile}
+                        <option value={profile.profileName}
+                            >{profile.profileName}</option
+                        >
+                    {/each}
+                </select>
+                {#if selectedProfileId}
+                    <button
+                        type="button"
+                        class="btn-icon danger"
+                        on:click={deleteProfile}
+                        title="Delete Profile">🗑️</button
                     >
-                {/each}
-            </select>
+                {/if}
+            </div>
         {/if}
 
         <button
@@ -133,6 +159,17 @@
 
     .btn-icon:hover {
         background: var(--border-color);
+    }
+
+    .btn-icon.danger:hover {
+        background: #fee2e2;
+        border-color: #ef4444;
+    }
+
+    .profile-controls {
+        display: flex;
+        align-items: center;
+        gap: 4px;
     }
 
     .profile-select {

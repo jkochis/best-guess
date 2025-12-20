@@ -95,6 +95,5 @@
 
     .card-content {
         padding: 16px;
-        background: white;
     }
 </style>
