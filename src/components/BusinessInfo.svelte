@@ -1,5 +1,6 @@
 <script>
-    import { businessInfo } from "../lib/stores";
+    import { businessInfo, savedBusinessProfiles } from "../lib/stores";
+    import CollapsibleCard from "./CollapsibleCard.svelte";
 
     function clear() {
         if (confirm("Clear business info?")) {
@@ -8,71 +9,117 @@
     }
 
     function save() {
-        // Auto-save is active, but we can provide visual feedback
-        alert("Business info saved!");
+        const name = prompt(
+            "Enter a name for this business profile:",
+            $businessInfo.name,
+        );
+        if (name) {
+            const profile = { ...$businessInfo, profileName: name };
+            // Remove existing with same name if exists, then add new
+            const others = $savedBusinessProfiles.filter(
+                (p) => p.profileName !== name,
+            );
+            $savedBusinessProfiles = [...others, profile];
+            alert(`Business profile "${name}" saved!`);
+        }
+    }
+
+    function loadProfile(event) {
+        const profileName = event.target.value;
+        if (!profileName) return;
+
+        const profile = $savedBusinessProfiles.find(
+            (p) => p.profileName === profileName,
+        );
+        if (profile) {
+            const { profileName: _, ...data } = profile; // Exclude meta prop
+            $businessInfo = data;
+        }
+        event.target.value = ""; // Reset select
     }
 </script>
 
-<div class="card">
-    <div class="section-header">
-        <h2>Business Info</h2>
-        <div class="actions-group">
-            <button type="button" class="btn-icon" on:click={save} title="Save"
-                >🔒</button
-            >
-            <button
-                type="button"
-                class="btn-icon"
-                on:click={clear}
-                title="Clear">🧹</button
-            >
+<CollapsibleCard title="Business Info">
+    <!-- Summary View -->
+    <div slot="summary">
+        {$businessInfo.name || "No Business Name"}
+        {#if $businessInfo.address}
+            • {$businessInfo.address.split("\n")[0]}
+        {/if}
+    </div>
+
+    <!-- Header Actions -->
+    <div slot="header-actions" class="actions-group">
+        {#if $savedBusinessProfiles.length > 0}
+            <select class="profile-select" on:change={loadProfile}>
+                <option value="">Load Profile...</option>
+                {#each $savedBusinessProfiles as profile}
+                    <option value={profile.profileName}
+                        >{profile.profileName}</option
+                    >
+                {/each}
+            </select>
+        {/if}
+
+        <button
+            type="button"
+            class="btn-icon"
+            on:click={save}
+            title="Save Profile">🔒</button
+        >
+        <button type="button" class="btn-icon" on:click={clear} title="Clear"
+            >🧹</button
+        >
+    </div>
+
+    <!-- Main Content -->
+    <div class="form-content">
+        <div class="form-group">
+            <label for="biz-name">Business Name</label>
+            <input
+                id="biz-name"
+                type="text"
+                bind:value={$businessInfo.name}
+                placeholder="Your Business Name"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="biz-address">Address</label>
+            <textarea
+                id="biz-address"
+                bind:value={$businessInfo.address}
+                placeholder="123 Main St..."
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="biz-phone">Phone</label>
+            <input
+                id="biz-phone"
+                type="tel"
+                bind:value={$businessInfo.phone}
+                placeholder="(555) 123-4567"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="biz-email">Email</label>
+            <input
+                id="biz-email"
+                type="email"
+                bind:value={$businessInfo.email}
+                placeholder="contact@example.com"
+            />
         </div>
     </div>
-
-    <div class="form-group">
-        <label for="biz-name">Business Name</label>
-        <input
-            id="biz-name"
-            type="text"
-            bind:value={$businessInfo.name}
-            placeholder="Your Business Name"
-        />
-    </div>
-
-    <div class="form-group">
-        <label for="biz-address">Address</label>
-        <textarea
-            id="biz-address"
-            bind:value={$businessInfo.address}
-            placeholder="123 Main St..."
-        ></textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="biz-phone">Phone</label>
-        <input
-            id="biz-phone"
-            type="tel"
-            bind:value={$businessInfo.phone}
-            placeholder="(555) 123-4567"
-        />
-    </div>
-
-    <div class="form-group">
-        <label for="biz-email">Email</label>
-        <input
-            id="biz-email"
-            type="email"
-            bind:value={$businessInfo.email}
-            placeholder="contact@example.com"
-        />
-    </div>
-</div>
+</CollapsibleCard>
 
 <style>
     .actions-group {
         display: flex;
         gap: 8px;
+        align-items: center;
     }
 
     .btn-icon {
@@ -83,9 +130,24 @@
         font-size: 1.2rem;
         padding: 4px 8px;
         transition: all 0.2s;
+        line-height: 1;
     }
 
     .btn-icon:hover {
         background: var(--border-color);
+    }
+
+    .profile-select {
+        padding: 4px 8px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 0.9rem;
+        max-width: 120px;
+    }
+
+    .form-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 </style>

@@ -27,6 +27,8 @@ export const businessInfo = createPersistentStore('businessInfo', {
     address: ''
 });
 
+export const savedBusinessProfiles = createPersistentStore('savedBusinessProfiles', []);
+
 // Customer Info (Now persisted)
 export const customerInfo = createPersistentStore('customerInfo', {
     name: '',
@@ -35,8 +37,10 @@ export const customerInfo = createPersistentStore('customerInfo', {
     address: ''
 });
 
+export const savedCustomerProfiles = createPersistentStore('savedCustomerProfiles', []);
+
 // Estimate Details
-export const estimateDetails = writable({
+export const estimateDetails = createPersistentStore('estimateDetails', {
     number: 'EST-001',
     date: new Date().toISOString().split('T')[0],
     validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
@@ -44,11 +48,11 @@ export const estimateDetails = writable({
 
 // Line Items
 // Item structure: { id, description, quantity, rate, amount }
-export const lineItems = writable([
+export const lineItems = createPersistentStore('lineItems', [
     { id: 0, description: '', quantity: 1, rate: 0, amount: 0 }
 ]);
 
-export const taxRate = writable(0);
+export const taxRate = createPersistentStore('taxRate', 0);
 
 // Derived Totals
 export const totals = derived(
@@ -67,7 +71,7 @@ export const totals = derived(
 
 
 // Notes
-export const notes = writable('');
+export const notes = createPersistentStore('notes', '');
 
 // PDF Preview Store
 export const previewState = writable({

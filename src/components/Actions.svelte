@@ -14,6 +14,8 @@
     } from "../lib/stores";
     import { get } from "svelte/store";
 
+    import { exportData } from "../lib/export";
+
     function handlePreviewPDF() {
         const data = {
             business: $businessInfo,
@@ -47,7 +49,7 @@
         $qrState = { isOpen: true, url };
     }
 
-    function emailPDF() {
+    function saveExport() {
         const data = {
             business: $businessInfo,
             customer: $customerInfo,
@@ -60,29 +62,8 @@
             },
         };
 
-        if (!data.customer.email) {
-            alert("Please enter customer email address");
-            return;
-        }
-
-        // Generate PDF download
-        generatePDF(data);
-
-        // Mailto
-        const subject = encodeURIComponent(
-            `Estimate ${data.estimate.number} from ${data.business.name || "Best Guess"}`,
-        );
-        const body = encodeURIComponent(
-            `Dear ${data.customer.name},\n\n` +
-                `Please find attached the estimate for your home repair project.\n\n` +
-                `Estimate #: ${data.estimate.number}\n` +
-                `Total: $${data.totals.total.toFixed(2)}\n\n` +
-                `If you have any questions, please don't hesitate to contact us.\n\n` +
-                `Best regards,\n${data.business.name || "Your Business"}`,
-        );
-        window.open(
-            `mailto:${data.customer.email}?subject=${subject}&body=${body}`,
-        );
+        exportData(data);
+        alert("Data saved to browser and exported to file!");
     }
 
     function clearForm() {
@@ -128,8 +109,8 @@
     <button type="button" class="btn btn-primary" on:click={shareQR}
         >Share with QR</button
     >
-    <button type="button" class="btn btn-primary" on:click={emailPDF}
-        >Email to Customer</button
+    <button type="button" class="btn btn-primary" on:click={saveExport}
+        >Save / Export</button
     >
     <button type="button" class="btn btn-secondary" on:click={clearForm}
         >Clear Form</button
