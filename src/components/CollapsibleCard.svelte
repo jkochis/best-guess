@@ -90,7 +90,6 @@
     h2 {
         margin: 0;
         font-size: 1.1rem;
-        color: var(--text-primary) !important; /* Force color to stay dark */
     }
 
     .summary {

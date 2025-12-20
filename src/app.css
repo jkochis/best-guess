@@ -62,8 +62,10 @@ header h1 {
     font-size: 1.25rem;
     margin-bottom: 20px;
     color: var(--text-primary);
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--border-color);
+
+    .closed & {
+        color: var(--text-secondary);
+    }
 }
 
 .section-header {
@@ -258,7 +260,8 @@ header h1 {
 .btn-primary {
     background: var(--primary-color);
     color: white;
-    border-color: var(--primary-color); /* Added explicit border to match sizing if needed */
+    border-color: var(--primary-color);
+    /* Added explicit border to match sizing if needed */
     color: white;
 }
 
@@ -346,7 +349,7 @@ header h1 {
     .btn-remove {
         display: none;
     }
-    
+
     /* Also hide add button if accessible */
     button {
         display: none;
