@@ -279,6 +279,7 @@
         border-radius: 0;
         padding: 4px 0;
         background: transparent;
+        color: var(--text-secondary);
     }
 
     .group-title-input:focus {
