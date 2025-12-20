@@ -1,27 +1,57 @@
 <script>
     import { qrState } from "../lib/stores";
     import QRCode from "qrcode";
-    import { onMount, afterUpdate } from "svelte";
+    import { shortenUrl } from "../lib/share";
 
     let canvas;
+    let useShortLink = false;
+    let shortUrl = null;
+    let currentUrl = "";
 
-    async function generateQR() {
-        if ($qrState.isOpen && $qrState.url && canvas) {
-            try {
-                await QRCode.toCanvas(canvas, $qrState.url, {
-                    width: 256,
-                    margin: 2,
-                });
-            } catch (err) {
-                console.error(err);
+    // 1. React to modal open: reset state
+    $: if ($qrState.isOpen) {
+        if (!currentUrl) {
+            // Initial load
+            currentUrl = $qrState.url;
+        }
+    } else {
+        // Reset when closed
+        useShortLink = false;
+        shortUrl = null;
+        currentUrl = "";
+    }
+
+    // 2. React to toggle change
+    $: updateUrlMode(useShortLink);
+
+    async function updateUrlMode(shorten) {
+        if (!$qrState.isOpen) return;
+
+        if (shorten) {
+            if (!shortUrl) {
+                // Fetch if not already cached
+                shortUrl = await shortenUrl($qrState.url);
             }
+            currentUrl = shortUrl;
+        } else {
+            currentUrl = $qrState.url;
         }
     }
 
-    // React to state changes
-    $: if ($qrState.isOpen && $qrState.url) {
-        // Wait for DOM
-        setTimeout(generateQR, 0);
+    // 3. Generate QR when currentUrl changes
+    $: if (canvas && currentUrl) {
+        generateQR(currentUrl);
+    }
+
+    async function generateQR(url) {
+        try {
+            await QRCode.toCanvas(canvas, url, {
+                width: 256,
+                margin: 2,
+            });
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     function close() {
@@ -47,6 +77,14 @@
 
             <div class="qr-container">
                 <canvas bind:this={canvas}></canvas>
+
+                <div class="toggle-container">
+                    <label class="shorten-toggle">
+                        <input type="checkbox" bind:checked={useShortLink} />
+                        <span>Shorten URL?</span>
+                    </label>
+                </div>
+
                 <p class="helper-text">
                     Scan with your phone camera to load this estimate.
                 </p>
@@ -55,7 +93,7 @@
                     <input
                         type="text"
                         readonly
-                        value={$qrState.url}
+                        value={currentUrl}
                         on:click={(e) => e.target.select()}
                     />
                 </div>
@@ -106,6 +144,7 @@
     .modal-header h2 {
         margin: 0;
         font-size: 1.25rem;
+        color: var(--text-primary);
     }
 
     .btn-close {
@@ -128,6 +167,20 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
+    }
+
+    .toggle-container {
+        margin-top: 16px;
+    }
+
+    .shorten-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        color: var(--text-primary);
+        user-select: none;
     }
 
     .helper-text {

@@ -1,6 +1,6 @@
 <script>
     import { generatePDF, getPDFUrl } from "../lib/pdf";
-    import { getShareUrl, shortenUrl } from "../lib/share";
+    import { getShareUrl } from "../lib/share";
     import {
         businessInfo,
         customerInfo,
@@ -15,8 +15,6 @@
     import { get } from "svelte/store";
 
     import { exportData } from "../lib/export";
-
-    let useShortLink = false;
 
     function handlePreviewPDF() {
         const data = {
@@ -35,7 +33,7 @@
         $previewState = { isOpen: true, pdfUrl: url };
     }
 
-    async function shareQR() {
+    function shareQR() {
         const data = {
             business: $businessInfo,
             customer: $customerInfo,
@@ -47,12 +45,7 @@
                 taxRate: $taxRate,
             },
         };
-        let url = getShareUrl(data);
-
-        if (useShortLink) {
-            url = await shortenUrl(url);
-        }
-
+        const url = getShareUrl(data);
         $qrState = { isOpen: true, url };
     }
 
@@ -113,17 +106,9 @@
     <button type="button" class="btn btn-primary" on:click={handlePreviewPDF}
         >Preview PDF</button
     >
-    <div class="share-group">
-        <button type="button" class="btn btn-primary" on:click={shareQR}
-            >Share with QR</button
-        >
-        <label class="shorten-toggle">
-            <input type="checkbox" bind:checked={useShortLink} />
-            <span title="Make the QR code simpler by using a short link"
-                >Shorten?</span
-            >
-        </label>
-    </div>
+    <button type="button" class="btn btn-primary" on:click={shareQR}
+        >Share with QR</button
+    >
     <button type="button" class="btn btn-primary" on:click={saveExport}
         >Save / Export</button
     >
@@ -131,24 +116,3 @@
         >Clear Form</button
     >
 </div>
-
-<style>
-    .share-group {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .shorten-toggle {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 0.75rem;
-        cursor: pointer;
-        color: var(--text-secondary);
-    }
-
-    .shorten-toggle input {
-        margin: 0;
-    }
-</style>
