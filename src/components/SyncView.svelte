@@ -3,7 +3,7 @@
     import QRCode from "qrcode";
     import { Html5QrcodeScanner } from "html5-qrcode";
     import { SyncHost, SyncClient } from "../lib/webrtc";
-    import { uploadToIPFS, downloadFromIPFS } from "../lib/ipfs";
+    import { uploadToIPFS, downloadFromIPFS, getPeerCount } from "../lib/ipfs";
     import {
         businessInfo,
         customerInfo,
@@ -27,6 +27,8 @@
     let ipfsPassword = "";
     let ipfsCid = "";
     let ipfsError = "";
+    let ipfsPeers = 0;
+    let peerInterval;
 
     // Data to sync
     $: syncData = {
@@ -36,6 +38,31 @@
         savedCustomerProfiles: $savedCustomerProfiles,
         savedEstimates: $savedEstimates,
     };
+
+    // Watch syncMethod to start/stop peer polling
+    $: if (syncMethod === "cloud") {
+        startPeerPolling();
+    } else {
+        stopPeerPolling();
+    }
+
+    function startPeerPolling() {
+        if (peerInterval) return;
+        // Poll immediately once
+        checkPeers();
+        peerInterval = setInterval(checkPeers, 3000);
+    }
+
+    function stopPeerPolling() {
+        if (peerInterval) {
+            clearInterval(peerInterval);
+            peerInterval = null;
+        }
+    }
+
+    async function checkPeers() {
+        ipfsPeers = await getPeerCount();
+    }
 
     // --- WebRTC Logic ---
     function startHost() {
@@ -232,6 +259,7 @@
 
     onDestroy(() => {
         if (scanner) stopScanner();
+        stopPeerPolling();
     });
 </script>
 
@@ -341,6 +369,16 @@
             <p class="info-text">
                 Upload encrypted data to IPFS and share the CID.
             </p>
+
+            <div class="peer-status" class:connected={ipfsPeers > 0}>
+                <span class="status-dot"></span>
+                <span>{ipfsPeers} Peers Connected</span>
+            </div>
+            {#if ipfsPeers === 0}
+                <p class="warning-text">
+                    Wait for peers before uploading/downloading...
+                </p>
+            {/if}
 
             <div class="form-group">
                 <label>Encryption Password:</label>
@@ -570,6 +608,39 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
+    }
+
+    .peer-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #64748b;
+        font-size: 0.9rem;
+        background: #f1f5f9;
+        padding: 6px 12px;
+        border-radius: 20px;
+        width: fit-content;
+        margin: 0 auto;
+    }
+
+    .peer-status.connected .status-dot {
+        background: #22c55e;
+        box-shadow: 0 0 5px #22c55e;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ef4444;
+        transition: all 0.3s;
+    }
+
+    .warning-text {
+        font-size: 0.85rem;
+        color: #eab308;
+        margin-top: -10px;
     }
 
     .info-text {
