@@ -1,6 +1,6 @@
 import { createHelia } from "helia";
 import { unixfs } from "@helia/unixfs";
-import { MemoryBlockstore } from "blockstore-memory";
+import { MemoryBlockstore } from "blockstore-core";
 import CryptoJS from "crypto-js";
 
 // Singleton instance
