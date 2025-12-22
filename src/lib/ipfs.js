@@ -2,6 +2,7 @@ import { createHelia } from "helia";
 import { unixfs } from "@helia/unixfs";
 import { MemoryBlockstore } from "blockstore-core";
 import { createLibp2p } from "libp2p";
+import { kadDHT } from "@libp2p/kad-dht";
 import { webSockets } from "@libp2p/websockets";
 import { webRTC } from "@libp2p/webrtc";
 import { noise } from "@chainsafe/libp2p-noise";
@@ -9,6 +10,7 @@ import { yamux } from "@chainsafe/libp2p-yamux";
 import { bootstrap } from "@libp2p/bootstrap";
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
 import { identify } from "@libp2p/identify";
+import { ping } from "@libp2p/ping";
 import CryptoJS from "crypto-js";
 
 // Singleton instance
@@ -26,11 +28,9 @@ export async function initHelia() {
             transports: [
                 webSockets(),
                 webRTC(),
-                circuitRelayTransport({
-                    discoverRelays: 1,
-                }),
+                circuitRelayTransport(),
             ],
-            connectionEncryption: [noise()],
+            connectionEncrypters: [noise()],
             streamMuxers: [yamux()],
             peerDiscovery: [
                 bootstrap({
@@ -43,7 +43,9 @@ export async function initHelia() {
                 }),
             ],
             services: {
+                dht: kadDHT({ clientMode: true }),
                 identify: identify(),
+                ping: ping(),
             },
         });
 

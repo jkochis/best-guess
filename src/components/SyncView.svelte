@@ -3,7 +3,12 @@
     import QRCode from "qrcode";
     import { Html5QrcodeScanner } from "html5-qrcode";
     import { SyncHost, SyncClient } from "../lib/webrtc";
-    import { uploadToIPFS, downloadFromIPFS, getPeerCount } from "../lib/ipfs";
+    import {
+        uploadToIPFS,
+        downloadFromIPFS,
+        getPeerCount,
+        initHelia,
+    } from "../lib/ipfs";
     import {
         businessInfo,
         customerInfo,
@@ -46,8 +51,15 @@
         stopPeerPolling();
     }
 
-    function startPeerPolling() {
+    async function startPeerPolling() {
         if (peerInterval) return;
+        // Start Helia immediately
+        try {
+            await initHelia();
+        } catch (e) {
+            console.error("Failed to init Helia:", e);
+        }
+
         // Poll immediately once
         checkPeers();
         peerInterval = setInterval(checkPeers, 3000);
