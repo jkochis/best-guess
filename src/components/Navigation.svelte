@@ -7,6 +7,7 @@
         { id: "saved-estimates", label: "Saved Estimates", icon: "📂" },
         { id: "saved-invoices", label: "Saved Invoices", icon: "🧾" },
         { id: "profiles", label: "Saved Profiles", icon: "👥" },
+        { id: "sync", label: "Sync Devices", icon: "🔄" },
     ];
 </script>
 
