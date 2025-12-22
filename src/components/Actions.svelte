@@ -18,6 +18,7 @@
     import { get } from "svelte/store";
 
     import { exportData } from "../lib/export";
+    import { populateRandomData } from "../lib/randomizer";
 
     function handlePreviewPDF() {
         const data = {
@@ -167,6 +168,13 @@
         <button type="button" class="btn btn-text danger" on:click={clearForm}
             >Clear</button
         >
+        {#if import.meta.env.DEV}
+            <button
+                type="button"
+                class="btn btn-text dev-btn"
+                on:click={populateRandomData}>Dev: Populate</button
+            >
+        {/if}
     </div>
 </div>
 
@@ -228,5 +236,15 @@
     .danger:hover {
         color: #dc2626;
         background: #fee2e2;
+    }
+
+    .dev-btn {
+        color: #9333ea;
+        font-family: monospace;
+    }
+
+    .dev-btn:hover {
+        background-color: #f3e8ff;
+        color: #7e22ce;
     }
 </style>

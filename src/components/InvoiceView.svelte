@@ -335,9 +335,9 @@
         border-bottom: 1px solid #eee;
     }
 
-    .col-qty,
-    .col-rate,
-    .col-amount {
+    .invoice-table .col-qty,
+    .invoice-table .col-rate,
+    .invoice-table .col-amount {
         text-align: right;
         width: 100px;
     }

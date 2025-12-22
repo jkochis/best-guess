@@ -3,18 +3,27 @@
     import CollapsibleCard from "./CollapsibleCard.svelte";
 
     // Calculate group totals for display
-    $: groups = $lineItems
-        .filter((item) => item.type === "group")
-        .map((group) => {
-            const sum = (group.items || []).reduce(
-                (acc, item) => acc + (item.amount || 0),
-                0,
-            );
-            return {
-                name: group.description || "(Untitled Group)",
-                amount: sum,
-            };
-        });
+    // Flatten all items for display
+    $: breakdown = $lineItems.reduce((acc, item) => {
+        if (item.type === "group") {
+            if (item.items && item.items.length > 0) {
+                // Add all sub-items
+                acc.push(
+                    ...item.items.map((subItem) => ({
+                        name: subItem.description || "(Untitled Item)",
+                        amount: Number(subItem.amount) || 0,
+                    })),
+                );
+            }
+        } else {
+            // Add top-level item
+            acc.push({
+                name: item.description || "(Untitled Item)",
+                amount: Number(item.amount) || 0,
+            });
+        }
+        return acc;
+    }, []);
 </script>
 
 <CollapsibleCard title="Totals" id="totals">
@@ -24,14 +33,15 @@
 
     <div class="totals">
         <!-- Group Breakdown -->
-        {#each groups as group}
-            <div class="total-row group-row">
-                <span class="group-name">{group.name}:</span>
-                <span class="group-amount">${group.amount.toFixed(2)}</span>
+        <!-- Group Breakdown -->
+        {#each breakdown as item}
+            <div class="total-row item-row">
+                <span>{item.name}:</span>
+                <span>${item.amount.toFixed(2)}</span>
             </div>
         {/each}
 
-        {#if groups.length > 0}
+        {#if breakdown.length > 0}
             <hr class="separator" />
         {/if}
 
@@ -75,13 +85,9 @@
         font-size: 1rem;
     }
 
-    .group-row {
+    .item-row {
         font-size: 0.9rem;
         color: var(--text-secondary);
-    }
-
-    .group-name {
-        font-style: italic;
     }
 
     .separator {
