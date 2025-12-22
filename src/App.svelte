@@ -5,6 +5,7 @@
   import SavedInvoicesView from "./components/SavedInvoicesView.svelte";
   import ProfilesView from "./components/ProfilesView.svelte";
   import SyncView from "./components/SyncView.svelte";
+  import HelpView from "./components/HelpView.svelte";
 
   import PreviewModal from "./components/PreviewModal.svelte";
   import QRModal from "./components/QRModal.svelte";
@@ -61,6 +62,8 @@
       <ProfilesView />
     {:else if currentView === "sync"}
       <SyncView />
+    {:else if currentView === "help"}
+      <HelpView />
     {/if}
   </main>
 
