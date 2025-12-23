@@ -12,12 +12,12 @@
             <p>
                 Best Guess allows you to synchronize your estimates, invoices,
                 and profiles between devices (e.g., this computer and your
-                phone) without creating an account. We use two methods:
+                phone) without creating an account.
             </p>
         </section>
 
         <section>
-            <h3>Method 1: Direct (P2P)</h3>
+            <h3>Direct Peer-to-Peer Sync</h3>
             <p>
                 <strong>Best for:</strong> Devices in the same room (e.g. PC and
                 Phone).
@@ -49,54 +49,12 @@
         </section>
 
         <section>
-            <h3>Method 2: Cloud (IPFS)</h3>
-            <p>
-                <strong>Best for:</strong> Syncing when devices aren't together,
-                or if P2P fails.
-            </p>
-            <p>
-                This method saves an encrypted snapshot of your data to the
-                decentralized web (IPFS).
-            </p>
-            <ol>
-                <li>
-                    Go to <strong>Sync Devices</strong> and switch to
-                    <strong>Cloud (IPFS)</strong>.
-                </li>
-                <li>
-                    <strong>Sender:</strong> Enter a secret password and click
-                    <strong>Encrypt & Upload</strong>.
-                </li>
-                <li>
-                    Wait for the upload to finish. You will get a <strong
-                        >CID</strong
-                    > (a long string of characters) and a QR code.
-                </li>
-                <li>
-                    <strong>Receiver:</strong> Go to the IPFS tab on the other device.
-                </li>
-                <li>Enter the <strong>same password</strong>.</li>
-                <li>Enter the CID (or scan the QR code).</li>
-                <li>Click <strong>Download & Decrypt</strong>.</li>
-            </ol>
-            <div class="note">
-                <strong>Security:</strong> Your data is encrypted with your password
-                before it leaves your device. Without the password, the data on IPFS
-                is unreadable junk.
-            </div>
-        </section>
-
-        <section>
             <h3>Troubleshooting</h3>
             <ul>
                 <li>
                     <strong>Camera not opening?</strong> Check your browser permissions.
                     Also, modern browsers block camera access on non-secure (HTTP)
                     sites unless it's localhost.
-                </li>
-                <li>
-                    <strong>IPFS stuck?</strong> IPFS runs in your browser. It might
-                    take a moment to find peers.
                 </li>
             </ul>
         </section>

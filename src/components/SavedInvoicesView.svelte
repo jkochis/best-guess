@@ -41,12 +41,19 @@
         // $invoiceState.isOpen = true;
     }
 
-    function deleteInvoice(index) {
+    function deleteInvoice(invoice) {
         if (!confirm("Delete this saved invoice?")) return;
-        const itemToDelete = invoices[index];
-        if (itemToDelete) {
-            $savedEstimates = $savedEstimates.filter((e) => e !== itemToDelete);
-        }
+
+        console.log("Deleting invoice:", invoice);
+
+        $savedEstimates = $savedEstimates.filter((e) => {
+            // If both have IDs, compare IDs
+            if (e.id && invoice.id) {
+                return String(e.id) !== String(invoice.id);
+            }
+            // Fallback to reference equality
+            return e !== invoice;
+        });
     }
 
     function formatDate(isoString) {
@@ -88,7 +95,8 @@
                         >
                         <button
                             class="btn btn-danger"
-                            on:click={() => deleteInvoice(i)}>Delete</button
+                            on:click|preventDefault|stopPropagation={() =>
+                                deleteInvoice(inv)}>Delete</button
                         >
                     </div>
                 </div>

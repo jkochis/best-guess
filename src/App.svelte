@@ -28,9 +28,23 @@
 
   function handleNavigate(viewId) {
     currentView = viewId;
+    window.location.hash = viewId;
+  }
+
+  function handleHashChange() {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      currentView = hash;
+    } else {
+      currentView = "new-estimate";
+    }
   }
 
   onMount(() => {
+    // Initial load
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+
     const data = loadFromUrl();
     if (data) {
       if (data.business) $businessInfo = data.business;
@@ -40,6 +54,10 @@
       if (data.notes) $notes = data.notes;
       if (data.totals && data.totals.taxRate) $taxRate = data.totals.taxRate;
     }
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
   });
 
   // Automatically switch back to invoice view handling if needed?

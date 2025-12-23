@@ -36,9 +36,12 @@
         onClose();
     }
 
-    function deleteEstimate(index) {
+    function deleteEstimate(item) {
         if (!confirm("Delete this saved item?")) return;
-        $savedEstimates = $savedEstimates.filter((_, i) => i !== index);
+        $savedEstimates = $savedEstimates.filter((e) => {
+            if (e.id && item.id) return e.id !== item.id;
+            return e !== item;
+        });
     }
 
     function formatDate(isoString) {
@@ -95,7 +98,8 @@
                                 </div>
                                 <button
                                     class="delete-btn"
-                                    on:click={() => deleteEstimate(i)}
+                                    on:click|preventDefault|stopPropagation={() =>
+                                        deleteEstimate(est)}
                                     title="Delete"
                                 >
                                     🗑️
